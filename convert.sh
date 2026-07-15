@@ -6,7 +6,7 @@ find ./japanese ./english -type f -name "*.md" | while read -r file; do
     echo "Converting: $file -> $outfile"
     mkdir -p "$(dirname "$outfile")"
 
-    /home/mikami-kousei/Softwares/pandoc-3.10/bin/pandoc "$file" \
+    pandoc "$file" \
         -o "$outfile" \
         --lua-filter=tex-to-typst.lua
 
