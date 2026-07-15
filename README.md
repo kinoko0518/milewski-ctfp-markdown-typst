@@ -1,9 +1,8 @@
-# milewski-ctfp-markdown
+# milewski-ctfp-markdown-typst
 
-バルトシュ・ミレフスキー著『プログラマーのための圏論』の非公式markdown版（[原著者の公開許可済み](https://github.com/ktgw0316/milewski-ctfp-markdown/issues/2#issuecomment-1494275529)の日本語訳を含む）
+このリポジトリは、バルトシュ・ミレフスキー著『プログラマーのための圏論』の非公式Markdown版をフォークし、TeXに依存する部分をTypstに置き換えたものです（[原著者の公開許可済み](https://github.com/ktgw0316/milewski-ctfp-markdown/issues/2#issuecomment-1494275529)の日本語訳を含みます）。
 
-An *unofficial* markdown version of "**C**ategory **T**heory **F**or **P**rogrammers"
-by [Bartosz Milewski][bartosz github], based on:
+This repository is a fork of the *unofficial* Markdown version of "**C**ategory **T**heory **F**or **P**rogrammers" by [Bartosz Milewski][bartosz github], with TeX-dependent parts replaced by Typst. It is based on:
 
 * Original [blogpost series][blogpost series]
 * [PDF/LaTeX version][ctfp-pdf] by Igal Tabachnik
@@ -12,21 +11,21 @@ by [Bartosz Milewski][bartosz github], based on:
 
 ## How to build
 
-1. Install [pandoc](https://pandoc.org/installing.html) and LuaLaTeX
-1. `cd english/` (or `cd japanese/` if you want to build Japanese version)
-1. Convert markdown to:
-   * html: `pandoc -d ../defaults_html.yaml --template=../html_templates/toc-sidebar.html --to=html5 -o index.html`
-   * epub: `pandoc -d ../defaults_html.yaml --to=epub -o ctfp.epub`
-   * pdf: `pandoc -d defaults.yaml -o ctfp.pdf`
-     * To make the index available in PDF and/or fix "Missing character" warnings, you need to run the following commands:
-
-        ```shell
-        pandoc -d defaults.yaml -o ctfp.tex
-        sed -i '' -f ../ensuremath.sed ctfp.tex
-        lualatex ctfp
-        upmendex -d index.dic ctfp
-        lualatex ctfp
-        ```
+1. Install [pandoc](https://pandoc.org/installing.html) and [Typst](https://github.com/typst/typst).
+1. Convert Markdown to Typst:
+    ```bash
+    $ ./convert.sh
+    ```
+1. Compile to PDF or HTML:
+    - For Japanese PDF:
+      ```bash
+      $ typst compile main.typ --input lang=ja
+      ```
+    - For English PDF:
+      ```bash
+      $ typst compile main.typ --input lang=en
+      ```
+    - For HTML generation, just add the `--format=html` option to your command. (Note: You may additionally need the `--features html` flag.)
 
 [bartosz github]: https://github.com/BartoszMilewski
 [blogpost series]:
