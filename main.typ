@@ -1,5 +1,7 @@
 #import "category.typ": *
-#include "codeblock.typ"
+#import "style.typ": prelude
+
+#show: document => prelude(document)
 
 #let chapters = (
   "preface-for-japanese",
@@ -47,6 +49,15 @@
 } else {
   panic("Untranslated language specified.\nAre you using a language code, like 'en', 'ja'?")
 }
+
+#set text(font: "Harano Aji Mincho")
+#show raw.where(block: true): set block(
+  radius: 0.5em,
+  fill: luma(230),
+  inset: (left: 1.5em, right: 1.5em, top: 1.0em, bottom: 1.0em),
+  above: 1.2em,
+  below: 1.2em,
+)
 
 #for ch in chapters [
   #include lang-root + "/" + ch + ".typ"
