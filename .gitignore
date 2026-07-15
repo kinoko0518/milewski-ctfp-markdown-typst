@@ -1,10 +1,4 @@
-build/
-documents/
-node_modules/
-pytermex/
-termextract*/
-tests/
-test_data/
+out/
 */images
 *.aux
 *.dvi
