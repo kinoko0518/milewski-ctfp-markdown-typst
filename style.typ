@@ -15,6 +15,13 @@
     leading: 1em,
     spacing: 2em,
   )
+  set page(numbering: "1", paper: "a5", margin: (
+    inside: 1.5cm,
+    outside: 2cm,
+    top: 1.5cm,
+    bottom: 1.5cm
+  ))
+  set text(size: 0.8em)
 
   body
 }

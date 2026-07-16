@@ -1,8 +1,48 @@
 #import "category.typ": *
 #import "style.typ": prelude
+#import "heading.typ": heading-style
 
 #show: document => prelude(document)
 
+// 引数から言語コードを受け取り、言語周りの諸変数を初期化
+#let lang = sys.inputs.at("lang", default: "ja")
+#let lang-root = if lang == "ja" {
+  "japanese"
+} else if lang == "en" {
+  "english"
+} else {
+  panic("Untranslated language specified.\nAre you using a language code, like 'en', 'ja'?")
+}
+#let lang-root-of-out = "out/" + lang-root
+
+// 表紙
+#let metadata = yaml(lang-root + "/metadata.yaml")
+#align(right, {
+  v(25%)
+  block(
+    width: 15em,
+    text(size: 2em, [*#metadata.at("title")*])
+  )
+  linebreak()
+  text(size: 1.2em, if lang == "ja" {
+    for author in metadata.at("author") {
+      [*#author*]
+    }
+  } else {
+    [by *#metadata.at("author")*]
+  })
+})
+#pagebreak()
+
+// 目次
+#outline(title: if lang == "ja" {
+  "目次"
+} else {
+  "Contents"
+})
+#pagebreak()
+
+// 本編
 #let chapters = (
   "preface-for-japanese",
   "preface",
@@ -41,25 +81,9 @@
   "acknowledgments",
   "license",
 )
-#let lang = sys.inputs.at("lang", default: "ja")
-#let lang-root = if lang == "ja" {
-  "out/japanese"
-} else if lang == "en" {
-  "out/english"
-} else {
-  panic("Untranslated language specified.\nAre you using a language code, like 'en', 'ja'?")
-}
-
-#set text(font: "Harano Aji Mincho")
-#show raw.where(block: true): set block(
-  radius: 0.5em,
-  fill: luma(230),
-  inset: (left: 1.5em, right: 1.5em, top: 1.0em, bottom: 1.0em),
-  above: 1.2em,
-  below: 1.2em,
-)
-
 #for ch in chapters [
-  #include lang-root + "/" + ch + ".typ"
+  #show: document => heading-style(document)
+
+  #include lang-root-of-out + "/" + ch + ".typ"
   #pagebreak()
 ]
