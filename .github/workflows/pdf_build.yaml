@@ -27,11 +27,9 @@ jobs:
       # 原ノ味フォントをGitHubからダウンロードして配置
       - name: Install Harano Aji Fonts
         run: |
-          ASSET_URL=$(curl -s https://api.github.com/repos/trueroad/HaranoAjiFonts/releases/latest | grep "browser_download_url.*\.zip" | cut -d '"' -f 4)
-          wget -O HaranoAjiFonts.zip "$ASSET_URL"
-          unzip HaranoAjiFonts.zip
+          git clone --depth 1 https://github.com/trueroad/HaranoAjiFonts.git
           mkdir -p ~/.local/share/fonts
-          find . -name "*.otf" -exec cp {} ~/.local/share/fonts/ \;
+          find HaranoAjiFonts -name "*.otf" -exec cp {} ~/.local/share/fonts/ \;
           fc-cache -fv
 
       # 生成されたPDFをReleaseのアセットに追加
