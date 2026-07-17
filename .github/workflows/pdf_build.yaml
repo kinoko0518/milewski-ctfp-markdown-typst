@@ -14,12 +14,6 @@ jobs:
         with:
           ref: main
 
-      # Pandocと原ノ味フォントをaptでインストール
-      - name: Install Pandoc and Harano Aji Fonts
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y pandoc fonts-haranoaji
-
       # Typst環境のセットアップ
       - name: Setup Typst
         uses: typst-community/setup-typst@v3
