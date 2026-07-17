@@ -1,0 +1,39 @@
+name: Generate and Upload PDF
+
+on:
+  release:
+    types: [published]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      # mainブランチをチェックアウト
+      - name: Checkout main branch
+        uses: actions/checkout@v4
+        with:
+          ref: main
+
+      # Pandocと原ノ味フォントをaptでインストール
+      - name: Install Pandoc and Harano Aji Fonts
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y pandoc fonts-haranoaji
+
+      # Typst環境のセットアップ
+      - name: Setup Typst
+        uses: typst-community/setup-typst@v3
+
+      # 変換スクリプトの実行とTypstのコンパイル
+      - name: Run convert.sh and compile main.typ
+        run: |
+          chmod +x ./convert.sh
+          ./convert.sh
+          typst compile main.typ main.pdf
+
+      # 生成されたPDFをReleaseのアセットに追加
+      - name: Upload PDF to Release
+        uses: softprops/action-gh-release@v2
+        if: startsWith(github.ref, 'refs/tags/')
+        with:
+          files: main.pdf
