@@ -32,6 +32,13 @@ jobs:
           find HaranoAjiFonts -name "*.otf" -exec cp {} ~/.local/share/fonts/ \;
           fc-cache -fv
 
+      # PDFを生成
+      - name: Run convert.sh and compile main.typ
+        run: |
+          chmod +x ./convert.sh
+          ./convert.sh
+          typst compile main.typ main.pdf
+
       # 生成されたPDFをReleaseのアセットに追加
       - name: Upload PDF to Release
         uses: softprops/action-gh-release@v2
