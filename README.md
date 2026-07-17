@@ -35,8 +35,6 @@ This repository is a fork of the *unofficial* Markdown version of "**C**ategory 
 
 ## 日本語訳について
 
-html版は[github pages](https://ktgw0316.github.io/milewski-ctfp-markdown/)としても公開しています。
-
 * 監訳：松田 一孝
 * 翻訳：北川 雅裕
 
