@@ -24,12 +24,21 @@ jobs:
       - name: Setup Typst
         uses: typst-community/setup-typst@v3
 
-      # 変換スクリプトの実行とTypstのコンパイル
-      - name: Run convert.sh and compile main.typ
+      # Pandocのみaptでインストール
+      - name: Install Pandoc
         run: |
-          chmod +x ./convert.sh
-          ./convert.sh
-          typst compile main.typ main.pdf
+          sudo apt-get update
+          sudo apt-get install -y pandoc
+
+      # 原ノ味フォントをGitHubからダウンロードして配置
+      - name: Install Harano Aji Fonts
+        run: |
+          ASSET_URL=$(curl -s https://api.github.com/repos/trueroad/HaranoAjiFonts/releases/latest | grep "browser_download_url.*\.zip" | cut -d '"' -f 4)
+          wget -O HaranoAjiFonts.zip "$ASSET_URL"
+          unzip HaranoAjiFonts.zip
+          mkdir -p ~/.local/share/fonts
+          find . -name "*.otf" -exec cp {} ~/.local/share/fonts/ \;
+          fc-cache -fv
 
       # 生成されたPDFをReleaseのアセットに追加
       - name: Upload PDF to Release
